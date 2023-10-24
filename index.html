@@ -32,10 +32,36 @@
             bottom: 20px;
             right: 30px;
         }
-    </style>
+    
+#temperatureContainer {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    font-size: 24px;
+}
+</style>
 </head>
 <body>
     <div id="quoteContainer"></div>
+<div id="temperatureContainer">
+    <span>Temperatura: </span>
+    <span id="temperatureElement">Carregando...</span>
+</div>
+
+<script>
+    // Fetch temperature data from open-meteo API for Icaraí, Niterói (latitude and longitude adjusted)
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=-22.9045&longitude=-43.1037&current=temperature_2m,windspeed_10m&hourly=temperature_2m,relativehumidity_2m,windspeed_10m")
+        .then(response => response.json())
+        .then(data => {
+            // Update the temperature field in the HTML
+            document.getElementById("temperatureElement").textContent = `${data.current.temperature_2m}°C`;
+        })
+        .catch(error => {
+            console.error("Erro ao buscar a temperatura:", error);
+            document.getElementById("temperatureElement").textContent = "Erro ao carregar.";
+        });
+</script>
+
     <div id="digitalClock"></div>
     <div id="currentDate"></div>
     <script>
